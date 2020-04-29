@@ -98,20 +98,60 @@ const printToDom = (selector, textToPrint) => {
 const buildDuckCards = (duckCollection) => {
   let domString = '<div class="row">';
 
-  for (let i =0; i < duckCollection.length; i++) {
-    domString += '<div id="duck-pen" class="col-4 mt-2">';
-    domString += `<img src="${duckCollection[i].imageUrl}">`
-    domString += `<h2>${duckCollection[i].color}</h2>`
-    domString += `<h3>${duckCollection[i].name}<h3>`
-    domString += `<h4>${duckCollection[i].size}<h4>`
-    domString += `<p> This ${duckCollection[i].temperament} duck is a ${duckCollection[i].gender} aged ${duckCollection[i].age} and is a ${duckCollection[i].isRubber}`
-    domString += '</div>'
+  for (let i =0; i < duckCollection.length; i++) { 
+    const duck = duckCollection[i];
+
+    domString += `
+    <div class="duck card">
+      <img src="${duck.imageUrl}" class="card-img-top" alt="...">
+      <div class="card-body">
+         <h5 class="card-title">Card title</h5>
+         <p class="card-text">Temperament ${duck.temperament}
+            Age: ${duck.age}
+            Size: ${duck.size}
+           </p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+
+      <div class="duck">
+          <h2>${duck.name}</h2>
+          <img src="${duck.imageUrl}">
+          <p>Age: ${duck.age}</p>
+          <p>${duck.size}</p>
+          <p>Temperament: ${duck.temperament.toUpperCase()}</p>
+        </div>
+        `;
   }
+
   printToDom('#duck-pen', domString);
 }
 
+const filterDucksEvent = (event) => {
+  console.log('filtered ducks?');
+  const buttonId = event.target.id;
+ 
+  const tempDuckCollection = [];
+
+  for (let i = 0; i < ducks.length; i++) {
+    if (ducks[i].size === buttonId) {
+      tempDuckCollection.push(ducks[i]);
+    }
+  }
+
+  buildDuckCards(tempDuckCollection);
+}
+
+const clickEvents = () => {
+  document.querySelector('#small').addEventListener('click', filterDucksEvent);
+  document.querySelector('#medium').addEventListener('click', filterDucksEvent);
+  document.querySelector('#large').addEventListener('click', filterDucksEvent);
+ }
+ 
+
 const init = () => {
   buildDuckCards(ducks);
+  clickEvents();
 }
 
 init();
